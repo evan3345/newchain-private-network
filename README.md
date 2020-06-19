@@ -34,35 +34,35 @@ Options:
 
 ### Create the 2-sealers private network
 
-* 1. Start bootnode
+* Start bootnode
 ```
 python ncli.py bootnode start
 ```
 
-* 2. Initialize the 2 sealers
+* Initialize the 2 sealers
 ```
 python ncli.py sealer init node1
 python ncli.py sealer init node2
 ```
 
-* 3. Start the sealers
+* Start the sealers
 ```
 python ncli.py sealer startall
 ```
 
 ### Create the 100-sealers private network
 
-* 1. Start bootnode
+* Start bootnode
 ```
 python ncli.py bootnode start
 ```
 
-* 2. Initialize the 100 sealers
+* Initialize the 100 sealers
 ```
 python ncli.py sealer batch init 100
 ```
 
-* 3. Start the sealers
+* Start the sealers
 ```
 python ncli.py sealer startall
 ```
