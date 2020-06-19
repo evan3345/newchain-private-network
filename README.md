@@ -29,6 +29,11 @@ Options:
   -h --help     Show this screen.
   --version     Show version.
 ```
+  
+* Stop the sealers and boot node, delete the temporary log and configuration files
+```
+python ncli.py clean
+```
 
 ## Tutorial
 
