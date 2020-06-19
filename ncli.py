@@ -6,6 +6,7 @@ Usage:
   ncli.py sealer start <name>
   ncli.py sealer startall
   ncli.py sealer stop
+  ncli.py sealer clone <source> <target>
   ncli.py sealer batch init <number>
   ncli.py bootnode start
   ncli.py bootnode stop
@@ -120,6 +121,35 @@ def init_sealer(sealer_name, ip_address=None):
     save_config(config)
     print("Create Sealer `%s`:%s Successfully" % (sealer_name, address))
 
+def clone_sealer(source, target, ip_address=None):
+    if ip_address:
+        print("NotImplemented")
+        return
+    # load configuration
+    config = load_config()
+    
+    # execute the commands 
+    cmd = 'cp -r %s/%s %s/%s' % (WORKSPACE, source, WORKSPACE, target)
+    os.system(cmd)
+    # find the keystore address
+    files = find_files('UTC-*', '%s/%s/keystore/' % (WORKSPACE, target))
+    #TODO: Add the timestamp compare
+    # Only choose first file
+    if not files:
+        print("Create Sealer Error!")
+        return
+    address = get_address_from_keystore(files[0])
+    # update configuration
+    number_of_sealers = len(config)
+    # save configuration
+    config[target] = {
+        'p2p_port': START_P2P_PORT + number_of_sealers,
+        'rpc_port': START_RPC_PORT + number_of_sealers,
+        'address': address,
+    }
+    save_config(config)
+    print("Clone Sealer `%s`:%s Successfully" % (target, address))
+
 def start_sealer(sealer_name, ip_address=None):
     if ip_address:
         print("NotImplemented")
@@ -187,6 +217,10 @@ if __name__ == '__main__':
         else:
             sealer_name = arguments['<name>']
             init_sealer(sealer_name)
+    if arguments['sealer'] and arguments['clone']:
+        source = arguments['<source>']
+        target = arguments['<target>']
+        clone_sealer(source, target)
     elif arguments['sealer'] and arguments['startall']:
         config = load_config()
         for k, v in config.items():
