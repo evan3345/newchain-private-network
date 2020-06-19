@@ -19,3 +19,6 @@ bin/swarm
 bin/swarm-smoke
 bin/swarm-snapshot
 bin/wnode
+ncli_config.json
+devnet
+genesis.json
