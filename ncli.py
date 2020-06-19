@@ -4,7 +4,9 @@
 Usage:
   ncli.py sealer init <name>
   ncli.py sealer start <name>
+  ncli.py sealer startall
   ncli.py sealer stop
+  ncli.py sealer batch init <number>
   ncli.py bootnode start
   ncli.py bootnode stop
   ncli.py clean
@@ -53,7 +55,7 @@ def update_genesis(address, init_balance='0x200000000000000000000000000000000000
     config = load_config()
     content['extraData'] = EXTRA_DATA % ''.join([v['address'] for k,v in config.items()] + [address])
     f = open(GENESIS_FILE_PATH, 'w')
-    f.write(json.dumps(content, indent=2) + "\n")
+    f.write(json.dumps(content, indent=2, sort_keys=True) + "\n")
     f.close()
 
 def clean_genesis():
@@ -61,11 +63,11 @@ def clean_genesis():
     content['alloc'] = {}
     content['extraData'] = ''
     f = open(GENESIS_FILE_PATH, 'w')
-    f.write(json.dumps(content, indent=2) + "\n")
+    f.write(json.dumps(content, indent=2, sort_keys=True) + "\n")
     f.close()
 
 def save_config(config):
-    content = json.dumps(config, indent=2)
+    content = json.dumps(config, indent=2, sort_keys=True)
     f = open(CONFIG_NCLI, 'w')
     f.write(content)
     f.close()
@@ -168,21 +170,30 @@ def stop_bootnode(ip_address=None):
         print("Stop bootnode error!")
 
 def clean_env():
-    cmd = 'rm -rf devnet && rm -f *.log && rm -f ncli_config.json && rm -rf logs'
-    os.system(cmd)
     clean_genesis()
     stop_bootnode()
     stop_sealers()
+    cmd = 'rm -rf devnet && rm -f *.log && rm -f ncli_config.json && rm -rf logs'
+    os.system(cmd)
     print("Clean OK")
 
 if __name__ == '__main__':
     arguments = docopt(__doc__, version='NCLI 1.0')
     if arguments['sealer'] and arguments['init']:
-        sealer_name = arguments['<name>']
-        init_sealer(sealer_name)
+        if arguments['batch']:
+            number_of_sealer = int(arguments['<number>'])
+            for i in range(number_of_sealer):
+                init_sealer('node%s' % (i + 1))
+        else:
+            sealer_name = arguments['<name>']
+            init_sealer(sealer_name)
+    elif arguments['sealer'] and arguments['startall']:
+        config = load_config()
+        for k, v in config.items():
+            start_sealer(k)
     elif arguments['sealer'] and arguments['start']:
         sealer_name = arguments['<name>']
-        start_sealer(sealer_name)    
+        start_sealer(sealer_name)
     elif arguments['bootnode'] and arguments['start']:
         start_bootnode()
     elif arguments['clean']:

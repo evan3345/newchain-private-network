@@ -1,27 +1,27 @@
 {
-  "nonce": "0x0", 
   "alloc": {}, 
-  "timestamp": "0x5eeb3367", 
-  "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000", 
-  "extraData": "", 
-  "gasLimit": "0x47b760", 
-  "number": "0x0", 
-  "difficulty": "0x1", 
-  "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000", 
   "coinbase": "0x0000000000000000000000000000000000000000", 
   "config": {
-    "eip155Block": 3, 
-    "homesteadBlock": 1, 
-    "eip158Block": 3, 
-    "eip150Hash": "0x0000000000000000000000000000000000000000000000000000000000000000", 
-    "eip150Block": 2, 
+    "byzantiumBlock": 4, 
     "chainId": 9999, 
     "clique": {
       "epoch": 30000, 
       "period": 3
     }, 
     "constantinopleBlock": 5, 
-    "byzantiumBlock": 4
+    "eip150Block": 2, 
+    "eip150Hash": "0x0000000000000000000000000000000000000000000000000000000000000000", 
+    "eip155Block": 3, 
+    "eip158Block": 3, 
+    "homesteadBlock": 1
   }, 
-  "gasUsed": "0x0"
+  "difficulty": "0x1", 
+  "extraData": "", 
+  "gasLimit": "0x47b760", 
+  "gasUsed": "0x0", 
+  "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000", 
+  "nonce": "0x0", 
+  "number": "0x0", 
+  "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000", 
+  "timestamp": "0x5eeb3367"
 }
