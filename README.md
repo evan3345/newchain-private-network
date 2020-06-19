@@ -1,4 +1,5 @@
-# newchain-private-network
+# NewChain Private Network
+Deploy tools for newchain private network.
 
 ## Installation
 
