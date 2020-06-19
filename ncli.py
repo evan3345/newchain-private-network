@@ -173,7 +173,7 @@ def stop_sealers(ip_address=None):
     if ip_address:
         print("NotImplemented")
         return
-    cmd = 'killall -9 geth'
+    cmd = 'killall -TERM geth'
     ret = os.system(cmd)
     if ret == 0:
         print("Stop sealers successfully")
@@ -196,7 +196,7 @@ def stop_bootnode(ip_address=None):
     if ip_address:
         print("NotImplemented")
         return
-    cmd = 'killall -9 bootnode'
+    cmd = 'killall -TERM bootnode'
     ret = os.system(cmd)
     if ret == 0:
         print("Stop bootnode successfully")
