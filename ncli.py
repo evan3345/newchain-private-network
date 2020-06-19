@@ -108,9 +108,6 @@ def init_sealer(sealer_name, ip_address=None):
         return
     address = get_address_from_keystore(files[0])
     update_genesis(address)
-    # intialize the given sealer
-    cmd = '%s --datadir %s/%s/ init %s' % (CMD_GETH, WORKSPACE, sealer_name, GENESIS_FILE_PATH)
-    os.system(cmd)
     # update configuration
     number_of_sealers = len(config)
     # save configuration
@@ -120,6 +117,12 @@ def init_sealer(sealer_name, ip_address=None):
         'address': address,
     }
     save_config(config)
+    # Reintialize the all sealers
+    for k, v in config.items():
+        cmd = 'rm -rf %s/%s/geth*' % (WORKSPACE, k)
+        os.system(cmd)
+        cmd = '%s --datadir %s/%s/ init %s' % (CMD_GETH, WORKSPACE, k, GENESIS_FILE_PATH)
+        os.system(cmd)
     print("Create Sealer `%s`:%s Successfully" % (sealer_name, address))
 
 def clone_sealer(source, target, ip_address=None):
