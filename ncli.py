@@ -54,7 +54,8 @@ def update_genesis(address, init_balance='0x200000000000000000000000000000000000
     content['alloc'][address] = {'balance': init_balance}
     # add the access control
     config = load_config()
-    content['extraData'] = EXTRA_DATA % ''.join([v['address'] for k,v in config.items()] + [address])
+    keys = sorted([v['address'] for k,v in config.items()] + [address])
+    content['extraData'] = EXTRA_DATA % ''.join(keys)
     f = open(GENESIS_FILE_PATH, 'w')
     f.write(json.dumps(content, indent=2, sort_keys=True) + "\n")
     f.close()
