@@ -30,9 +30,9 @@ Options:
   --version     Show version.
 ```
 
-### Tutorial
+## Tutorial
 
-## Create the 2-sealers private network
+### Create the 2-sealers private network
 
 * 1. Start bootnode
 ```
@@ -50,7 +50,7 @@ python ncli.py sealer init node2
 python ncli.py sealer startall
 ```
 
-## Create the 100-sealers private network
+### Create the 100-sealers private network
 
 * 1. Start bootnode
 ```
