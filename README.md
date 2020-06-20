@@ -3,7 +3,7 @@ Deploy tools for newchain private network.
 
 ## Installation
 
-* Install the python dependency packages
+* Install the python dependency packages based on python3(>=3.6.2)
 ```
 pip install -r requirements.txt
 ```
@@ -24,6 +24,7 @@ Usage:
   ncli.py bootnode start
   ncli.py bootnode stop
   ncli.py clean
+  ncli.py monitor
   ncli.py (-h | --help)
   ncli.py --version
 Options:
@@ -35,6 +36,12 @@ Options:
 ```
 python ncli.py clean
 ```
+
+* Monitor the status of sealers
+```
+python ncli.py monitor
+```
+![Monitor Screenshot](images/monitor-screenshot.png)
 
 ## Tutorial
 

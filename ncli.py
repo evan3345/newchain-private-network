@@ -11,6 +11,7 @@ Usage:
   ncli.py bootnode start
   ncli.py bootnode stop
   ncli.py clean
+  ncli.py monitor
   ncli.py (-h | --help)
   ncli.py --version
 
@@ -23,6 +24,7 @@ import os
 import json
 import fnmatch
 from docopt import docopt
+import monitor
 
 # constants
 WORKSPACE = 'devnet'
@@ -240,6 +242,9 @@ if __name__ == '__main__':
         stop_sealers()
     elif arguments['bootnode'] and arguments['stop']:
         stop_bootnode()
+    elif arguments['monitor']:
+        config = load_config()
+        monitor.start_monitor(config)
 
     
     
