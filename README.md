@@ -41,7 +41,7 @@ python ncli.py clean
 ```
 python ncli.py monitor
 ```
-![Monitor Screenshot](images/monitor-screenshot.png)
+![Monitor Screenshot](assets/monitor-screenshot.png)
 
 ## Tutorial
 
