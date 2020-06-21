@@ -18,7 +18,7 @@ Usage:
   ncli.py sealer init <name>
   ncli.py sealer start <name>
   ncli.py sealer startall
-  ncli.py sealer stop
+  ncli.py sealer stopall
   ncli.py sealer clone <source> <target>
   ncli.py sealer batch init <number>
   ncli.py bootnode start

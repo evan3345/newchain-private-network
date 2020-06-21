@@ -5,7 +5,7 @@ Usage:
   ncli.py sealer init <name>
   ncli.py sealer start <name>
   ncli.py sealer startall
-  ncli.py sealer stop
+  ncli.py sealer stopall
   ncli.py sealer clone <source> <target>
   ncli.py sealer batch init <number>
   ncli.py bootnode start
@@ -21,6 +21,7 @@ Options:
 
 """
 import os
+import time
 import json
 import fnmatch
 import subprocess
@@ -168,12 +169,13 @@ def start_sealer(sealer_name, ip_address=None):
     p2p_port = config[sealer_name]['p2p_port']
     rpc_port = config[sealer_name]['rpc_port']
     address = config[sealer_name]['address']
-    cmd = '%s --datadir %s/%s/ --syncmode "full" --port %s --rpc --rpcaddr "localhost" --rpcport %s --rpcapi "personal,db,eth,net,web3,txpool,miner" --bootnodes "enode://%s@127.0.0.1:30310" --networkid %s --gasprice "1" -unlock "0x%s" --password %s/%s/password.txt --mine --targetgaslimit 94000000 2>>logs/geth-%s.log &' % (CMD_GETH, WORKSPACE, sealer_name, p2p_port, rpc_port, BOOTNODE_ENCODE, CHAIN_ID, address, WORKSPACE, sealer_name, sealer_name)
+    cmd = '%s --datadir %s/%s/ --syncmode "full" --port %s --rpc --rpcaddr "localhost" --rpcport %s --rpcapi "personal,db,eth,net,web3,txpool,miner" --bootnodes "enode://%s@127.0.0.1:30310" --networkid %s --gasprice "1" -unlock "0x%s" --password %s/%s/password.txt --mine --targetgaslimit 94000000 2>>logs/geth-%s.log' % (CMD_GETH, WORKSPACE, sealer_name, p2p_port, rpc_port, BOOTNODE_ENCODE, CHAIN_ID, address, WORKSPACE, sealer_name, sealer_name)
     proc = subprocess.Popen([cmd], shell=True)
-    pid = proc.pid + 1
-    config[sealer_name]['pid'] = pid
+    pid = proc.pid
+    pgid = os.getpgid(pid)
+    config[sealer_name]['pgid'] = pgid
     save_config(config)
-    print("Start sealer `%s` at pid:%s, p2p:%s, rpc:%s" % (sealer_name, pid, p2p_port, rpc_port))
+    print("Start sealer `%s` at pgid:%s, p2p:%s, rpc:%s" % (sealer_name, pgid, p2p_port, rpc_port))
 
 def stop_sealers(ip_address=None):
     if ip_address:
@@ -181,14 +183,14 @@ def stop_sealers(ip_address=None):
         return
     try:
         config = load_config()
-        for k, v in config.items():
-            pid = v['pid']
-            cmd = 'kill -TERM %s' % pid
+        pgids = list(set([v['pgid'] for k,v in config.items()]))
+        for pgid in pgids:
+            cmd = 'kill -TERM -%s' % pgid
             ret = os.system(cmd)
             if ret == 0:
-                print("Stop sealer %s:%s successfully" % (k, pid))
+                print("Stop sealer pgid:%s successfully" % (pgid))
             else:
-                print("Stop sealer %s:%s error!" % (k, pid))
+                print("Stop sealer pgid:%s error!" % (pgid))
     except:
         pass
 
@@ -248,7 +250,7 @@ if __name__ == '__main__':
         start_bootnode()
     elif arguments['clean']:
         clean_env()
-    elif arguments['sealer'] and arguments['stop']:
+    elif arguments['sealer'] and arguments['stopall']:
         stop_sealers()
     elif arguments['bootnode'] and arguments['stop']:
         stop_bootnode()
